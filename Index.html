@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="mg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#123b2b">
+<title>Ny Baiboly AI</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#f4f7f2;color:#193528}
+header{background:#123b2b;color:white;padding:24px 16px;text-align:center}
+header h1{margin:0;font-size:28px}
+header p{margin-bottom:0}
+main{max-width:650px;margin:auto;padding:16px}
+.card{background:white;padding:18px;margin:14px 0;border-radius:14px;box-shadow:0 2px 8px #0001}
+h2{margin-top:0;color:#176344}
+button{background:#176344;color:white;border:0;padding:12px 16px;border-radius:9px;font-size:16px;cursor:pointer}
+input,textarea{width:100%;box-sizing:border-box;padding:12px;border:1px solid #ccd5cc;border-radius:8px;font-size:16px;margin:8px 0}
+textarea{min-height:100px}
+#answer{white-space:pre-wrap;line-height:1.6}
+footer{text-align:center;padding:24px;color:#667}
+</style>
+</head>
+<body>
+<header>
+<h1>📖 Ny Baiboly AI</h1>
+<p>Ianaro ny Tenin’Andriamanitra isan’andro</p>
+</header>
+<main>
+<section class="card">
+<h2>🌅 Andinin-teny androany</h2>
+<p>« Ny teninao no fanilon’ny tongotro sy fanazavana ny lalako. »</p>
+<p><b>Salamo 119:105</b></p>
+</section>
+<section class="card">
+<h2>🤖 Anontanio ny AI momba ny Baiboly</h2>
+<p>Manorata fanontaniana momba ny Baiboly.</p>
+<textarea id="question" placeholder="Ohatra: Inona no lesona azo raisina avy amin’ny tantaran’i Josefa?"></textarea>
+<button onclick="askAI()">Alefa ny fanontaniana</button>
+<p id="status"></p>
+<div id="answer"></div>
+</section>
+<section class="card">
+<h2>📚 Fianarana Baiboly</h2>
+<ul>
+<li>Ny tantaran’ny famoronana</li>
+<li>Ny fiainan’i Jesosy</li>
+<li>Ny vavaka sy ny finoana</li>
+<li>Ny fitiavana ny namana</li>
+</ul>
+</section>
+<section class="card">
+<h2>📝 Fanontaniana kely</h2>
+<p>Iza no nanamboatra ny sambofiara?</p>
+<button onclick="document.getElementById('quiz').textContent='Marina! I Noa no nanamboatra ny sambofiara, araka ny Genesisy 6.'">Noa</button>
+<button onclick="document.getElementById('quiz').textContent='Andramo indray! Vakio ny Genesisy 6.'">Mosesy</button>
+<p id="quiz"></p>
+</section>
+</main>
+<footer>Ny Baiboly AI · Mianara, misaintsaina, ary mitomboa amin’ny finoana.</footer>
+<script>
+async function askAI(){
+const q=document.getElementById('question').value.trim();
+const status=document.getElementById('status');
+const answer=document.getElementById('answer');
+if(!q){status.textContent='Soraty aloha ny fanontanianao.';return;}
+status.textContent='Miomana hamaly...';
+answer.textContent='';
+try{
+const r=await fetch('/api/chat',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({message:q})
+});
+const data=await r.json();
+if(!r.ok)throw new Error(data.error||'Tsy afaka nifandray tamin’ny AI.');
+answer.textContent=data.answer||'Tsy nahazo valiny.';
+status.textContent='';
+}catch(e){
+status.textContent='Mbola tsy mifandray amin’ny serveur AI ity tranonkala ity. Mila amboarina aloha ny fifandraisana.';
+}
+}
+</script>
+</body>
+</html>
